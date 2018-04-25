@@ -88,6 +88,9 @@ public:
 		data_queue_.pop();
 		return true;
 	}
+
+
+
 	/**
 	* \brief 从队列中弹出一个元素,如果队列为空返回false
 	* */

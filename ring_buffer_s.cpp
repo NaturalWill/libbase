@@ -13,12 +13,29 @@ inline ring_buffer_s::ring_buffer_s(const size_t capacity)
 
 inline ring_buffer_s::~ring_buffer_s()
 {
+	std::lock_guard<std::mutex>lk_write(mut_write_);
+	std::lock_guard<std::mutex>lk_read(mut_read_);
 	delete[] data_;
+}
+
+
+
+void ring_buffer_s::change_size(const size_t capacity) const
+{
+	std::lock_guard<std::mutex>lk_write(mut_write_);
+	std::lock_guard<std::mutex>lk_read(mut_read_);
+	delete[] data_;
+	data_ = new uint8_t[capacity];
 }
 
 inline size_t ring_buffer_s::size() const
 {
 	return size_;
+}
+
+size_t ring_buffer_s::space() const
+{
+	return capacity_ - size_;
 }
 
 inline size_t ring_buffer_s::capacity() const
@@ -35,7 +52,7 @@ inline size_t ring_buffer_s::write(const void *data, const size_t bytes)
 	const auto capacity = capacity_;
 	const auto bytes_to_write = std::min(bytes, capacity - size_);
 
-	if (bytes_to_write == 0) return 0;
+	if (bytes_to_write <= 0) return 0;
 
 	// 一次性写入
 	if (bytes_to_write <= capacity - rear_)
@@ -70,6 +87,8 @@ inline size_t ring_buffer_s::read(void *data, const size_t bytes)
 
 	const auto capacity = capacity_;
 	const auto bytes_to_read = std::min(bytes, size_);
+
+	if (bytes_to_read == 0) return 0;
 
 	// 一次性读取
 	if (bytes_to_read <= capacity - front_)

@@ -5,7 +5,7 @@
 /**
 * \brief 线程安全的环形缓冲区
 */
-class ring_buffer_s
+__declspec(dllexport) class ring_buffer_s
 {
 public:
 	explicit ring_buffer_s(size_t capacity);
@@ -18,15 +18,23 @@ public:
 	~ring_buffer_s();
 
 	/**
-	 * \brief 获取缓冲区已用大小
-	 */
+	* \brief 改变缓冲区大小
+	*/
+	void change_size(size_t capacity) const;
+	/**
+	* \brief 获取缓冲区已用大小
+	*/
 	size_t size() const;
-		
+	/**
+	 * \brief 获取缓冲区剩余空间
+	 */
+	size_t space() const;
+
 	/**
 	 * \brief 获取缓冲区容量
 	 */
 	size_t capacity() const;
-	
+
 	/**
 	 * \brief 写入数据
 	 * \param data 要写入的数据
@@ -46,7 +54,7 @@ public:
 
 private:
 	size_t front_, rear_, size_, capacity_;
-	uint8_t *data_;
+	mutable uint8_t *data_;
 	mutable spin_mutex mut_;
 	mutable std::mutex mut_read_;
 	mutable std::mutex mut_write_;
