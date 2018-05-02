@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 /*
 * queue_s.h
 *
@@ -13,15 +13,15 @@
 
 
 /**
-* \brief Ïß³Ì°²È«¶ÓÁĞ
+* \brief çº¿ç¨‹å®‰å…¨é˜Ÿåˆ—
 *
-* ÒòÎªÓĞstd::mutexºÍstd::condition_variableÀà³ÉÔ±,ËùÒÔ´ËÀà²»Ö§³Ö¸´ÖÆ¹¹Ôìº¯ÊıÒ²²»Ö§³Ö¸³Öµ²Ù×÷·û(=)
-* \tparam T TÎª¶ÓÁĞÔªËØÀàĞÍ
+* å› ä¸ºæœ‰std::mutexå’Œstd::condition_variableç±»æˆå‘˜,æ‰€ä»¥æ­¤ç±»ä¸æ”¯æŒå¤åˆ¶æ„é€ å‡½æ•°ä¹Ÿä¸æ”¯æŒèµ‹å€¼æ“ä½œç¬¦(=)
+* \tparam T Tä¸ºé˜Ÿåˆ—å…ƒç´ ç±»å‹
 */
 template<typename T>
 class queue_s {
 protected:
-	// data_queue·ÃÎÊĞÅºÅÁ¿
+	// data_queueè®¿é—®ä¿¡å·é‡
 	mutable std::mutex mut_;
 	mutable std::condition_variable cond_pop_data_;
 	mutable std::condition_variable cond_push_data_;
@@ -37,7 +37,7 @@ public:
 	queue_s(queue_s&&) = delete;
 	queue_s& operator=(queue_s&&) = delete;
 	/**
-	* \brief Ê¹ÓÃµü´úÆ÷Îª²ÎÊıµÄ¹¹Ôìº¯Êı,ÊÊÓÃËùÓĞÈİÆ÷¶ÔÏó
+	* \brief ä½¿ç”¨è¿­ä»£å™¨ä¸ºå‚æ•°çš„æ„é€ å‡½æ•°,é€‚ç”¨æ‰€æœ‰å®¹å™¨å¯¹è±¡
 	*/
 	template<typename _InputIterator>
 	queue_s(_InputIterator first, _InputIterator last) {
@@ -48,7 +48,7 @@ public:
 	explicit queue_s(const container_type &c) :data_queue_(c) {}
 
 	/**
-	* \brief Ê¹ÓÃ³õÊ¼»¯ÁĞ±íÎª²ÎÊıµÄ¹¹Ôìº¯Êı
+	* \brief ä½¿ç”¨åˆå§‹åŒ–åˆ—è¡¨ä¸ºå‚æ•°çš„æ„é€ å‡½æ•°
 	* \param list
 	*/
 	queue_s(std::initializer_list<value_type> list) :queue_s(list.begin(), list.end()) {
@@ -57,7 +57,7 @@ public:
 
 
 	/**
-	*  \brief ½«ÔªËØ¼ÓÈë¶ÓÁĞ
+	*  \brief å°†å…ƒç´ åŠ å…¥é˜Ÿåˆ—
 	* */
 	void push(const value_type &new_value) {
 		std::lock_guard<std::mutex>lk(mut_);
@@ -70,7 +70,7 @@ public:
 
 
 	/**
-	* \brief ÔÚÒ»¶¨Ê±¼äÄÚ³¢ÊÔ´Ó¶ÓÁĞÖĞµ¯³öÒ»¸öÔªËØ,Èç¹û³¬Ê±Ôò·µ»Ø false
+	* \brief åœ¨ä¸€å®šæ—¶é—´å†…å°è¯•ä»é˜Ÿåˆ—ä¸­å¼¹å‡ºä¸€ä¸ªå…ƒç´ ,å¦‚æœè¶…æ—¶åˆ™è¿”å› false
 	* \param value out value
 	* \param spend_time milliseconds
 	* \return
@@ -92,7 +92,7 @@ public:
 
 
 	/**
-	* \brief ´Ó¶ÓÁĞÖĞµ¯³öÒ»¸öÔªËØ,Èç¹û¶ÓÁĞÎª¿Õ·µ»Øfalse
+	* \brief ä»é˜Ÿåˆ—ä¸­å¼¹å‡ºä¸€ä¸ªå…ƒç´ ,å¦‚æœé˜Ÿåˆ—ä¸ºç©ºè¿”å›false
 	* */
 	bool try_pop(value_type& value) {
 		std::lock_guard<std::mutex>lk(mut_);
@@ -104,7 +104,7 @@ public:
 	}
 
 	/**
-	* \brief ´Ó¶ÓÁĞÖĞµ¯³öÒ»¸öÔªËØ,Èç¹û¶ÓÁĞÎª¿Õ¾Í×èÈû
+	* \brief ä»é˜Ÿåˆ—ä¸­å¼¹å‡ºä¸€ä¸ªå…ƒç´ ,å¦‚æœé˜Ÿåˆ—ä¸ºç©ºå°±é˜»å¡
 	* */
 	value_type wait_and_pop() {
 		std::unique_lock<std::mutex>lk(mut_);
@@ -116,14 +116,14 @@ public:
 	}
 
 	/**
-	* \brief ·µ»Ø¶ÓÁĞÊÇ·ñÎª¿Õ
+	* \brief è¿”å›é˜Ÿåˆ—æ˜¯å¦ä¸ºç©º
 	* */
 	auto empty() const->decltype(data_queue_.empty()) {
 		std::lock_guard<std::mutex>lk(mut_);
 		return data_queue_.empty();
 	}
 	/**
-	* \brief ·µ»Ø¶ÓÁĞÖĞÔªËØÊı¸ö
+	* \brief è¿”å›é˜Ÿåˆ—ä¸­å…ƒç´ æ•°ä¸ª
 	* */
 	auto size() const->decltype(data_queue_.size()) {
 		std::lock_guard<std::mutex>lk(mut_);

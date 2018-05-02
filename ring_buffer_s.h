@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include <mutex>
 #include "spin_mutex.h"
 
 /**
-* \brief Ïß³Ì°²È«µÄ»·ĞÎ»º³åÇø
+* \brief çº¿ç¨‹å®‰å…¨çš„ç¯å½¢ç¼“å†²åŒº
 */
-__declspec(dllexport) class ring_buffer_s
+class  ring_buffer_s
 {
 public:
 	explicit ring_buffer_s(size_t capacity);
@@ -18,45 +18,49 @@ public:
 	~ring_buffer_s();
 
 	/**
-	* \brief ¸Ä±ä»º³åÇø´óĞ¡
+	* \brief æ”¹å˜ç¼“å†²åŒºå¤§å°
 	*/
-	void change_size(size_t capacity) const;
+	void change_size(size_t capacity) ;
 	/**
-	* \brief »ñÈ¡»º³åÇøÒÑÓÃ´óĞ¡
+	* \brief è·å–ç¼“å†²åŒºå·²ç”¨å¤§å°
 	*/
 	size_t size() const;
 	/**
-	 * \brief »ñÈ¡»º³åÇøÊ£Óà¿Õ¼ä
+	 * \brief è·å–ç¼“å†²åŒºå‰©ä½™ç©ºé—´
 	 */
 	size_t space() const;
 
 	/**
-	 * \brief »ñÈ¡»º³åÇøÈİÁ¿
+	 * \brief è·å–ç¼“å†²åŒºå®¹é‡
 	 */
 	size_t capacity() const;
 
 	/**
-	 * \brief Ğ´ÈëÊı¾İ
-	 * \param data ÒªĞ´ÈëµÄÊı¾İ
-	 * \param bytes ÒªĞ´ÈëµÄÊı¾İµÄ´óĞ¡
-	 * \return ×îÖÕĞ´ÈëµÄÊı¾İµÄ´óĞ¡
+	 * \brief å†™å…¥æ•°æ®
+	 * \param data è¦å†™å…¥çš„æ•°æ®
+	 * \param bytes è¦å†™å…¥çš„æ•°æ®çš„å¤§å°
+	 * \return æœ€ç»ˆå†™å…¥çš„æ•°æ®çš„å¤§å°
 	 */
-	size_t write(const void *data, size_t bytes);
+	size_t write(const void *data, size_t bytes) ;
+	size_t write_force(const void* data, size_t) ;
 
 
 	/**
-	 * \brief ¶ÁÈ¡Êı¾İ
-	 * \param data ÓÃÀ´´æ·Å¶ÁÈ¡Êı¾İµÄbuffer
-	 * \param bytes Òª¶ÁÈ¡µÄÊı¾İ´óĞ¡
-	 * \return ×îÖÕ»ñÈ¡µ½µÄÊı¾İµÄ´óĞ¡
+	 * \brief è¯»å–æ•°æ®
+	 * \param data ç”¨æ¥å­˜æ”¾è¯»å–æ•°æ®çš„buffer
+	 * \param bytes è¦è¯»å–çš„æ•°æ®å¤§å°
+	 * \return æœ€ç»ˆè·å–åˆ°çš„æ•°æ®çš„å¤§å°
 	 */
-	size_t read(void *data, size_t bytes);
+	size_t read(void *data, size_t bytes) ;
+
+	bool try_read(void * data, const size_t bytes) ;
 
 private:
 	size_t front_, rear_, size_, capacity_;
-	mutable uint8_t *data_;
-	mutable spin_mutex mut_;
-	mutable std::mutex mut_read_;
-	mutable std::mutex mut_write_;
+	uint8_t *data_;
+	spin_mutex mut_;
+	std::mutex mut_read_;
+	std::mutex mut_write_;
 
 };
+

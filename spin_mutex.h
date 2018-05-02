@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <atomic>
 
 class spin_mutex {

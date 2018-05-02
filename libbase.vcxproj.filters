@@ -27,6 +27,9 @@
     <ClInclude Include="queue_s.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="semaphore.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ring_buffer_s.cpp">

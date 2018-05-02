@@ -118,6 +118,7 @@
     <ClInclude Include="queue_limited_s.h" />
     <ClInclude Include="queue_s.h" />
     <ClInclude Include="ring_buffer_s.h" />
+    <ClInclude Include="semaphore.h" />
     <ClInclude Include="spin_mutex.h" />
   </ItemGroup>
   <ItemGroup>
